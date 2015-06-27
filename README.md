@@ -1,2 +1,2 @@
-# game-of-life
-Simple scala implementation of Game of Life
+# Game of Life
+A simple Scala implementation of Game of Life

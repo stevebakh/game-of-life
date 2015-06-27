@@ -1,9 +1,9 @@
 
-case class Cell(x: Long, y: Long)
-
 class Life {
 
-  case class Position(x: Long, y: Long)
+  private case class Position(x: Long, y: Long)
+
+  case class Cell(x: Long, y: Long)
 
   private def candidatePositions(cells: Set[Cell]): Set[Position] =
     cells flatMap {
@@ -31,5 +31,5 @@ class Life {
           case Some(cell) => n >= 2 && n <= 3
         }
     } map (pos => Cell(pos.x, pos.y))
-
+    
 }
