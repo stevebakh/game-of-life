@@ -1,9 +1,9 @@
 
+case class Cell(x: Long, y: Long)
+
 class Life {
 
-  case class Cell(x: Long, y: Long)
-
-  private def candidatePositions(cells: Set[Cell]): Set[Cell] =
+  private def candidateCells(cells: Set[Cell]): Set[Cell] =
     cells flatMap {
       cell =>
         for {
@@ -21,7 +21,7 @@ class Life {
     }
 
   def tick(cells: Set[Cell]): Set[Cell] =
-    candidatePositions(cells) filter {
+    candidateCells(cells) filter {
       candidate =>
         val n = liveNeighbours(candidate, cells).size
         cells find (c => c.x == candidate.x && c.y == candidate.y) match {
