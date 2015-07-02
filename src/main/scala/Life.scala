@@ -15,16 +15,16 @@ class Life {
   private def liveNeighbours(candidate: Cell, cells: Set[Cell]): Set[Cell] =
     cells filter {
       cell =>
-        !(cell.x == candidate.x && cell.y == candidate.y) &&
-        cell.x >= candidate.x - 1 && cell.x <= candidate.x + 1 &&
-        cell.y >= candidate.y - 1 && cell.y <= candidate.y + 1
+        cell != candidate &&
+        math.abs(cell.x - candidate.x) <= 1 &&
+        math.abs(cell.y - candidate.y) <= 1
     }
 
   def tick(cells: Set[Cell]): Set[Cell] =
     candidateCells(cells) filter {
       candidate =>
         val n = liveNeighbours(candidate, cells).size
-        cells find (c => c.x == candidate.x && c.y == candidate.y) match {
+        cells find (_ == candidate) match {
           case None => n == 3
           case Some(cell) => n >= 2 && n <= 3
         }
