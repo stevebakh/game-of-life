@@ -20,7 +20,7 @@ class Life {
         math.abs(cell.y - candidate.y) <= 1
     }
 
-  def tick(cells: Set[Cell]): Set[Cell] =
+  def evolve(cells: Set[Cell]): Set[Cell] =
     candidateCells(cells) filter {
       candidate =>
         val n = liveNeighbours(candidate, cells).size
