@@ -24,9 +24,6 @@ class Life {
     candidateCells(cells) filter {
       candidate =>
         val n = liveNeighbours(candidate, cells).size
-        cells find (_ == candidate) match {
-          case None => n == 3
-          case Some(cell) => n >= 2 && n <= 3
-        }
+        ((cells contains candidate) && n >= 2 && n <= 3) || n == 3
     }
 }
