@@ -9,3 +9,5 @@ scalacOptions ++= Seq("-feature")
 libraryDependencies ++= Seq(
   "org.scalafx" %% "scalafx" % "8.0.40-R8",
   "org.scalatest" % "scalatest_2.11" % "2.2.4" % "test")
+
+unmanagedJars in Compile += Attributed.blank(file(System.getenv("JAVA_HOME") + "/jre/lib/ext/jfxrt.jar"))
