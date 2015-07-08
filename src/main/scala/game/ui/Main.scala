@@ -33,6 +33,20 @@ object Main extends JFXApp {
           val generation = new Text("0")
           val population = new Text("0")
 
+          val life = new Life
+
+          val timeline = new Timeline {
+            cycleCount = Timeline.Indefinite
+            keyFrames = KeyFrame(Duration(200), onFinished = (e: ActionEvent) => {
+              val seed = cellCanvas.cellCoords.map(c => new GameCell(c._1, c._2))
+              cellCanvas.clear()
+              val evolved = life.evolve(seed)
+              evolved.foreach(cell => cellCanvas.plotCell(cell.x, cell.y))
+              population.text = evolved.size.toString
+              generation.text = (generation.text.value.toLong + 1).toString
+            })
+          }
+
           val playButton = new ToggleButton("Run") {
             handleEvent(ActionEvent.Action) {
               e: ActionEvent =>
@@ -69,20 +83,6 @@ object Main extends JFXApp {
             generation,
             new Label("population:"),
             population)
-
-          val life = new Life
-
-          var timeline = new Timeline {
-            cycleCount = Timeline.Indefinite
-            keyFrames = KeyFrame(Duration(200), onFinished = (e: ActionEvent) => {
-              var seed = cellCanvas.cellCoords.map(c => new GameCell(c._1, c._2))
-              cellCanvas.clear()
-              val evolved = life.evolve(seed)
-              evolved.foreach(cell => cellCanvas.plotCell(cell.x, cell.y))
-              population.text = evolved.size.toString
-              generation.text = (generation.text.value.toLong + 1).toString
-            })
-          }
         }
 
         center = new Group {
