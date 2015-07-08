@@ -21,8 +21,8 @@ object Main extends JFXApp {
     scene = new Scene {
       root = new BorderPane {
 
-        val gameBoardCanvas = new CellCanvas
-        gameBoardCanvas.enablePlotting()
+        val cellCanvas = new CellCanvas
+        cellCanvas.enablePlotting()
 
         top = new ToolBar {
           val genLabel = new Label("generations:")
@@ -32,7 +32,7 @@ object Main extends JFXApp {
             handleEvent(ActionEvent.Action) {
               e: ActionEvent =>
                 if (selected.value) {
-                  gameBoardCanvas.disablePlotting()
+                  cellCanvas.disablePlotting()
                 }
             }
           }
@@ -43,8 +43,8 @@ object Main extends JFXApp {
                 if (playButton.selected.value)
                   playButton.fire()
 
-                gameBoardCanvas.clear()
-                gameBoardCanvas.enablePlotting()
+                cellCanvas.clear()
+                cellCanvas.enablePlotting()
                 generations.text = "0"
             }
           }
@@ -59,9 +59,9 @@ object Main extends JFXApp {
         }
 
         center = new Group {
-          gameBoardCanvas.width <== width
-          gameBoardCanvas.height <== height
-          children = gameBoardCanvas
+          cellCanvas.width <== width
+          cellCanvas.height <== height
+          children = cellCanvas
         }
       }
     }
