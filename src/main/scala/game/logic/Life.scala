@@ -1,3 +1,4 @@
+package game.logic
 
 case class Cell(x: Long, y: Long)
 
