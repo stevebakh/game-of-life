@@ -36,13 +36,13 @@ class CellCanvas extends Canvas {
 
   val clickEventHandler = new EventHandler[MouseEvent] {
     override def handle(e: MouseEvent): Unit = {
-      val x = e.x - (e.x % CellSize)
-      val y = e.y - (e.y % CellSize)
-      val coords = (x.toLong / CellSize, y.toLong / CellSize)
-      if (cells.contains(coords))
-        removeCell(coords._1, coords._2)
+      val x = ((e.x - (e.x % CellSize)) / CellSize).toLong
+      val y = ((e.y - (e.y % CellSize)) / CellSize).toLong
+
+      if (cells.contains((x, y)))
+        removeCell(x, y)
       else
-        plotCell(coords._1, coords._2)
+        plotCell(x, y)
     }
   }
 }
