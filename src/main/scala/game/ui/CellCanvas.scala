@@ -9,9 +9,9 @@ import scalafx.scene.paint.Color
 
 class CellCanvas extends Canvas {
 
-  val CellSize = 10
-  val gc = graphicsContext2D
-  var cells: Set[(Long, Long)] = Set.empty
+  private val CellSize = 10
+  private val gc = graphicsContext2D
+  private var cells: Set[(Long, Long)] = Set.empty
   gc.fill = Color.DarkGray
 
   def cellCoords: Set[(Long, Long)] = cells
