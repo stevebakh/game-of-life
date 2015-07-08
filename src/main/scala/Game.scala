@@ -14,7 +14,7 @@ import scalafx.scene.{Group, Scene}
 
 object Game extends JFXApp {
 
-  class GameBoardCanvas extends Canvas {
+  class CellCanvas extends Canvas {
 
     val CellSize = 10
     val gc = graphicsContext2D
@@ -64,7 +64,7 @@ object Game extends JFXApp {
     scene = new Scene {
       root = new BorderPane {
 
-        val gameBoardCanvas = new GameBoardCanvas
+        val gameBoardCanvas = new CellCanvas
         gameBoardCanvas.enablePlotting()
 
         top = new ToolBar {
