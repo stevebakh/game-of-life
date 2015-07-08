@@ -1,72 +1,88 @@
+import javafx.event.EventHandler
+import javafx.scene.input.MouseEvent
+
 import scalafx.Includes._
 import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
+import scalafx.event.ActionEvent
 import scalafx.scene.canvas.Canvas
-import scalafx.scene.control.{ScrollPane, ToggleButton, ToolBar}
-import scalafx.scene.input.{ZoomEvent, MouseEvent}
+import scalafx.scene.control._
 import scalafx.scene.layout.BorderPane
 import scalafx.scene.paint.Color
+import scalafx.scene.text.Text
 import scalafx.scene.{Group, Scene}
 
 object Game extends JFXApp {
 
   class GameBoardCanvas extends Canvas {
 
-    def show(): Unit = println("dimensions changed")
-    width onChange show()
-    height onChange show()
-
-    val CellSize = 20
+    val CellSize = 10
     val gc = graphicsContext2D
-    gc.fill = Color.rgb(204, 120, 50)
+    gc.fill = Color.DarkGray
 
-    handleEvent(MouseEvent.MouseClicked) {
-      e: MouseEvent =>
+    val clickEventHandler = new EventHandler[MouseEvent] {
+      override def handle(e: MouseEvent): Unit = {
         val x = e.x - (e.x % CellSize)
         val y = e.y - (e.y % CellSize)
         gc.fillRect(x, y, CellSize, CellSize)
+      }
     }
+
+    def clear(): Unit = gc.clearRect(0, 0, width.value, height.value)
+    def enablePlotting() = addEventHandler(MouseEvent.MOUSE_CLICKED, clickEventHandler)
+    def disablePlotting() = removeEventHandler(MouseEvent.MOUSE_CLICKED, clickEventHandler)
   }
 
   stage = new PrimaryStage {
+
     title = "Game of Life"
-    minWidth = 800
-    minHeight = 600
+    width = 800
+    height = 600
+    resizable = false
+
     scene = new Scene {
       root = new BorderPane {
+
+        val gameBoardCanvas = new GameBoardCanvas
+        gameBoardCanvas.enablePlotting()
+
         top = new ToolBar {
-          content = List(new ToggleButton("Run"))
-        }
+          val genLabel = new Label("generations:")
+          val generations = new Text("0")
 
-        center = new ScrollPane {
-          style = "-fx-background: rgb(43, 43, 43); -fx-background-color: rgb(43, 43, 43)"
-          hbarPolicy = ScrollPane.ScrollBarPolicy.NEVER
-          vbarPolicy = ScrollPane.ScrollBarPolicy.NEVER
-
-          hvalue = 10
-          vvalue = 10
-
-          content = new Group {
-            var gameBoardCanvas = new GameBoardCanvas
-
-            // bind the canvas' dimensions to that of the parent's
-            gameBoardCanvas.width <== width //* 2
-            gameBoardCanvas.height <== height //* 2
-
-            // set the gameboard canvas as a child of the group
-            children = gameBoardCanvas
-
-            handleEvent(ZoomEvent.ANY) {
-              e: ZoomEvent =>
-                if (!e.zoomFactor.isNaN) {
-                  val scale = scaleX.value * e.zoomFactor
-                  if (scale >= 0.1 && scale <= 1.0) {
-                    scaleX = scale
-                    scaleY = scale
-                  }
+          val playButton = new ToggleButton("Run") {
+            handleEvent(ActionEvent.Action) {
+              e: ActionEvent =>
+                if (selected.value) {
+                  gameBoardCanvas.disablePlotting()
                 }
             }
           }
+
+          val resetButton = new Button("Reset") {
+            handleEvent(ActionEvent.Any) {
+              e: ActionEvent =>
+                if (playButton.selected.value)
+                  playButton.fire()
+
+                gameBoardCanvas.clear()
+                gameBoardCanvas.enablePlotting()
+                generations.text = "0"
+            }
+          }
+
+          val sep = new Separator
+
+          content = List(playButton, resetButton, sep, genLabel, generations)
+        }
+
+        center = new Group {
+          // bind the canvas' dimensions to that of the parent's
+          gameBoardCanvas.width <== width
+          gameBoardCanvas.height <== height
+
+          // set the gameboard canvas as a child of the group
+          children = gameBoardCanvas
         }
       }
     }
