@@ -37,7 +37,7 @@ object Main extends JFXApp {
 
           val timeline = new Timeline {
             cycleCount = Timeline.Indefinite
-            keyFrames = KeyFrame(Duration(200), onFinished = (e: ActionEvent) => {
+            keyFrames = KeyFrame(Duration(100), onFinished = (e: ActionEvent) => {
               val seed = cellCanvas.cellCoords.map(c => new GameCell(c._1, c._2))
               cellCanvas.clear()
               val evolved = life.evolve(seed)
