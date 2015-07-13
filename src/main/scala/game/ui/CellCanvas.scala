@@ -31,7 +31,10 @@ class CellCanvas extends Canvas {
     cells = cells - ((x, y))
   }
 
-  def enablePlotting() = addEventHandler(MouseEvent.MOUSE_CLICKED, clickEventHandler)
+  def enablePlotting() = {
+    addEventHandler(MouseEvent.MOUSE_CLICKED, clickEventHandler)
+    addEventHandler(MouseEvent.MOUSE_DRAGGED, clickEventHandler)
+  }
   def disablePlotting() = removeEventHandler(MouseEvent.MOUSE_CLICKED, clickEventHandler)
 
   private val clickEventHandler = new EventHandler[MouseEvent] {
