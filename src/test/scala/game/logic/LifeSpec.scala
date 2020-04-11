@@ -1,42 +1,42 @@
 package game.logic
 
-import org.scalatest.FunSpec
-import org.scalatest.Matchers
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 
 /**
  * These tests refer to names of patterns defined on the
  * Wikipedia page for Conway's Game of Life.
  * See: https://en.wikipedia.org/wiki/Conway's_Game_of_Life#Examples_of_patterns
  */
-class LifeSpec extends FunSpec with Matchers {
+class LifeSpec extends AnyFunSpec with Matchers {
 
-  val life = new Life()
+  import Life.{Cell => Cell}
 
   describe("For any single tick") {
     describe("when there are no living cells") {
       it("none will come to life") {
-        life.evolve(Set.empty) shouldBe empty
+        Life.evolve(Set.empty) shouldBe empty
       }
     }
 
     describe("when only one cell is alive") {
       it("it will die and there will be no living cells") {
         val cells = Set(Cell(2, 4))
-        life.evolve(cells) shouldBe empty
+        Life.evolve(cells) shouldBe empty
       }
     }
 
     describe("when there are two living cells") {
       it("they will both die and there will be no living cells") {
         val cells = Set(Cell(2, 4), Cell(2, 5))
-        life.evolve(cells) shouldBe empty
+        Life.evolve(cells) shouldBe empty
       }
     }
 
     describe("when a candidate position has three living neighbours") {
       it("a new cell will come to life at that position") {
         val cells = Set(Cell(2, 1), Cell(1, 2), Cell(2, 2))
-        val tick1 = life.evolve(cells)
+        val tick1 = Life.evolve(cells)
         tick1 should contain (Cell(1, 1))
       }
     }
@@ -49,7 +49,7 @@ class LifeSpec extends FunSpec with Matchers {
             Cell(2, 3), Cell(4, 3),
             Cell(3, 4))
 
-          val result = life.evolve(boat)
+          val result = Life.evolve(boat)
           boat shouldEqual result
         }
       }
@@ -61,7 +61,7 @@ class LifeSpec extends FunSpec with Matchers {
             Cell(2, 3), Cell(5, 3),
             Cell(3, 4), Cell(4, 4))
 
-          val result = life.evolve(beehive)
+          val result = Life.evolve(beehive)
           beehive shouldEqual result
         }
       }
@@ -73,8 +73,8 @@ class LifeSpec extends FunSpec with Matchers {
       describe("so when the 'blinker' pattern emerges") {
         val start = Set(Cell(2, 3), Cell(3, 3), Cell(4, 3))
         val expected = Set(Cell(3, 2), Cell(3, 3), Cell(3, 4))
-        val tick1 = life.evolve(start)
-        val tick2 = life.evolve(tick1)
+        val tick1 = Life.evolve(start)
+        val tick2 = Life.evolve(tick1)
 
         it("the first tick will produce three live cells") {
           tick1 should have size 3
@@ -102,8 +102,8 @@ class LifeSpec extends FunSpec with Matchers {
           Cell(4, 2), Cell(2, 3), Cell(5, 3),
           Cell(2, 4), Cell(5, 4), Cell(3, 5))
 
-        val tick1 = life.evolve(start)
-        val tick2 = life.evolve(tick1)
+        val tick1 = Life.evolve(start)
+        val tick2 = Life.evolve(tick1)
 
         it("the first tick will produce six live cells") {
           tick1 should have size 6

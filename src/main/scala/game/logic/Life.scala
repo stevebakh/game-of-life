@@ -1,8 +1,8 @@
 package game.logic
 
-case class Cell(x: Long, y: Long)
+object Life {
 
-class Life {
+  case class Cell(x: Long, y: Long)
 
   private def candidateCells(cells: Set[Cell]): Set[Cell] =
     cells flatMap {
